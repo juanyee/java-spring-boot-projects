@@ -1,0 +1,45 @@
+OAuth notes
+	
+	Authentication:	Confirms that users are who they say they are
+	Authorization: 	Gives those users permission to access a resource
+
+	> OAth uses Authorization.
+
+
+Terminology:
+	Term 1: Resource (protected resource)
+	Term 2: Resource owner
+	Term 3: Resource server
+
+
+OAuth Flows
+	Flow 1: Authorization code flow
+		1.1 Person calls PhotoPrintingService
+		1.2 PhotoPrintingService calls GoogleAuthorizationServer
+		1.3 GoogleAuthorizationServer calls Person for confirmation
+		1.4 Person authorize using his credentials
+		1.5 GoogleAuthorizationServer sends "Auth token" to PhotoPrintingService
+		1.6 PhotoPrintingService sends "Auth token" to GoogleAuthorizationServer to receive "Access token"
+		1.7 GoogleAuthorizationServer sends "Access token" to PhotoPrintingService
+		1.8 PhotoPrintingService sends "API Call" usint "Access token" to GoogleDrive
+		1.9 GoogleDrive return information to PhotoPrintingService
+	
+	Flow 2: Implicit flow
+		2.1 Person calls PhotoPrintingApp
+		2.2 PhotoPrintingApp calls GoogleAuthorizationServer
+		2.3 GoogleAuthorizationServer calls Person for confirmation
+		2.4 Person authorize using his credentials
+			XXX GoogleAuthorizationServer sends "Auth token" to PhotoPrintingApp
+			XXX PhotoPrintingApp sends "Auth token" to GoogleAuthorizationServer to receive "Access token"
+		2.5 GoogleAuthorizationServer sends "Access token" to PhotoPrintingApp (no OAuth token)
+		2.6 PhotoPrintingApp sends "API Call" usint "Access token" to GoogleDrive
+		2.7 GoogleDrive return information to PhotoPrintingApp
+	
+	Flow 3: Client credentials flow
+			> the BIG use case
+			> OAuth for "Authorization between services"
+			> When the client is well trusted (confidential clients)
+		3.1 Microservice1 calls AuthService for authentication
+		3.2 AuthService returns the "Access token" to Microservice1
+		3.3 Microservice1 calls Microservice2 using "Access token"
+		3.4 Microservice2 returns a response requested by Microservice1
